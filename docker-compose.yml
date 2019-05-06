@@ -1,0 +1,82 @@
+version: '3'
+services:
+  vmi_db:
+    image: postgres
+    environment:
+            - POSTGRES_DB=vmi
+            - POSTGRES_PASSWORD=toor
+  verifymyidentity:
+    build:
+      context: vmi/
+      dockerfile: .development/Dockerfile
+    command: python3 manage.py runserver 0.0.0.0:8001
+    environment:
+      - DATABASES_CUSTOM=postgres://postgres:toor@vmi_db:5432/vmi
+      - OAUTHLIB_INSECURE_TRANSPORT=true
+      - OIDC_ISSUER=http://verifymyidentity:8001
+      - ALLOWED_HOSTS=verifymyidentity,localhost
+      - ROOT_USER=dev
+      - ROOT_PASSWORD=password
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./vmi:/code
+      - ./fixtures:/fixtures
+  smh_db:
+    image: postgres
+    environment:
+            - POSTGRES_DB=smh
+            - POSTGRES_PASSWORD=toor
+  sharemyhealth:
+    build:
+      context: sharemyhealth/
+      dockerfile: .development/Dockerfile
+    volumes:
+      - ./sharemyhealth:/code
+      - ./fixtures:/fixtures
+    command: python3 manage.py runserver 0.0.0.0:8000
+    environment:
+      - DATABASES_CUSTOM=postgres://postgres:toor@smh_db:5432/smh
+      - HOSTNAME_URL=http://sharemyhealth:8000
+      - OAUTHLIB_INSECURE_TRANSPORT=true
+      - ALLOWED_HOSTS=sharemyhealth,localhost
+      - SOCIAL_AUTH_VERIFYMYIDENTITY_OPENIDCONNECT_KEY=${VMI_KEY}
+      - SOCIAL_AUTH_VERIFYMYIDENTITY_OPENIDCONNECT_SECRET=${VMI_SECRET}
+      - SOCIAL_AUTH_VERIFYMYIDENTITY_OPENIDCONNECT_OIDC_ENDPOINT=http://verifymyidentity:8001
+      - ROOT_USER=dev
+      - ROOT_PASSWORD=password
+    ports:
+      - "8000:8000"
+    links:
+      - verifymyidentity
+
+  smh_app_db:
+    image: postgres
+    environment:
+            - POSTGRES_DB=smh_app
+            - POSTGRES_PASSWORD=toor
+  sharemyhealth_app:
+    build:
+      context: smh_app/
+      dockerfile: .development/Dockerfile
+    volumes:
+      - ./smh_app:/code
+      - ./fixtures:/fixtures
+    command: python3 manage.py runserver 0.0.0.0:8002
+    environment:
+      - DATABASES_CUSTOM=postgres://postgres:toor@smh_app_db:5432/smh_app
+      - ALLOWED_HOSTS=sharemyhealthapp,localhost
+      - VMI_OAUTH_KEY=${APP_VMI_KEY}
+      - VMI_OAUTH_SECRET=${APP_VMI_SECRET}
+      - VMI_OAUTH_HOST=http://verifymyidentity:8001
+      - SMH_OAUTH_KEY=${SMH_KEY}
+      - SMH_OAUTH_SECRET=${SMH_SECRET}
+      - SMH_OAUTH_HOST=http://sharemyhealth:8000
+      - ROOT_USER=dev
+      - ROOT_PASSWORD=password
+      - OAUTHLIB_INSECURE_TRANSPORT=1
+    ports:
+      - "8002:8002"
+    links:
+      - verifymyidentity
+      - sharemyhealth

@@ -1,0 +1,18 @@
+[
+{
+    "model": "oauth2_provider.application",
+    "pk": 1,
+    "fields": {
+        "client_id": "SIybt6eLIFNtUavqou7Gp6QtUVUwunSe5i1FOvH9",
+        "user": 1,
+        "redirect_uris": "http://sharemyhealthapp:8002/social-auth/complete/sharemyhealth/",
+        "client_type": "confidential",
+        "authorization_grant_type": "authorization-code",
+        "client_secret": "oZpmksZU4fqznG9OQbThjLe4PSRhN55mmTzfhjuQ09mcm8Qbk7WX1fSG3cyXVCqsdfZFsPu31iZsnO64xvqiFz7N5V0ht34Gw3LysW8KnKvTqs0bL19s2iuqHmxQNs71",
+        "name": "smh app",
+        "skip_authorization": false,
+        "created": "2019-04-23T12:37:07.732Z",
+        "updated": "2019-04-23T12:37:07.732Z"
+    }
+}
+]
