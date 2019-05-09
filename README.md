@@ -64,6 +64,22 @@ modify your `/etc/hosts` file such that the line you created before looks like t
 127.0.0.1       verifymyidentity sharemyhealth sharemyhealthapp
 ```
 
+Make sure that nodejs is available in your environment and build the static assets for smh_app:
+
+	cd smh_app/assets
+	make build
+
+You might also need / want to build the static assets inside the running sharemyhealth_app container:
+	
+	(from the cdex.dev folder:)
+	$ docker-compose exec sharemyhealth_app bash
+
+	(inside the sharemyhealth_app container:)
+	# curl -sL https://deb.nodesource.com/setup_10.x | bash -  # adds nodesource.com to your apt search path
+	# apt-get install -y nodejs
+	# cd assets
+	# make build
+
 You can now go to [sharemyhealthapp](http://sharemyhealthapp:8002) and login. Once logged in you can [connect share my health as a data source](http://sharemyhealthapp:8002/resources/).
 
 ## Trouble shooting
