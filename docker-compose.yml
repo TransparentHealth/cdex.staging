@@ -5,6 +5,8 @@ services:
     environment:
             - POSTGRES_DB=vmi
             - POSTGRES_PASSWORD=toor
+    volumes:
+      - vmi_db_data:/var/lib/postgresql/data
   verifymyidentity:
     build:
       context: vmi/
@@ -27,6 +29,8 @@ services:
     environment:
             - POSTGRES_DB=smh
             - POSTGRES_PASSWORD=toor
+    volumes:
+      - smh_db_data:/var/lib/postgresql/data
   sharemyhealth:
     build:
       context: sharemyhealth/
@@ -53,9 +57,11 @@ services:
   smh_app_db:
     image: postgres
     environment:
-            - POSTGRES_DB=smh_app
-            - POSTGRES_PASSWORD=toor
-  sharemyhealth_app:
+      - POSTGRES_DB=smh_app
+      - POSTGRES_PASSWORD=toor
+    volumes:
+      - smh_app_db_data:/var/lib/postgresql/data
+  smh_app:
     build:
       context: smh_app/
       dockerfile: .development/Dockerfile
@@ -80,3 +86,7 @@ services:
     links:
       - verifymyidentity
       - sharemyhealth
+volumes:
+  vmi_db_data:
+  smh_db_data:
+  smh_app_db_data:
