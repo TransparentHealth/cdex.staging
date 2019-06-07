@@ -71,8 +71,7 @@ cd smh_app/assets
 make build
 ```
 
-You might also need / want to build the static assets inside the running sharemyhealth_app container:
-	
+You might also need / want to build the static assets inside the running smh_app container:
 ```bash
 # (from the cdex.dev folder:)
 docker-compose exec smh_app bash
