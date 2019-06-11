@@ -54,9 +54,9 @@ This system depends on the previous two systems. It uses VMI as an identity prov
 
 Now smh_app is ready to be spun up.
 
-`docker-compose up -d sharemyhealth_app smh_app_db`
+`docker-compose up -d smh_app smh_app_db`
 
-`docker-compose exec sharemyhealth_app python manage.py migrate`
+`docker-compose exec smh_app python manage.py migrate`
 
 modify your `/etc/hosts` file such that the line you created before looks like the following.
 
@@ -66,21 +66,27 @@ modify your `/etc/hosts` file such that the line you created before looks like t
 
 Make sure that nodejs is available in your environment and build the static assets for smh_app:
 
-	cd smh_app/assets
-	make build
+```bash
+cd smh_app/assets
+make build
+```
 
-You might also need / want to build the static assets inside the running sharemyhealth_app container:
-	
-	(from the cdex.dev folder:)
-	$ docker-compose exec sharemyhealth_app bash
+You might also need / want to build the static assets inside the running smh_app container:
+```bash
+# (from the cdex.dev folder:)
+docker-compose exec smh_app bash
 
-	(inside the sharemyhealth_app container:)
-	# curl -sL https://deb.nodesource.com/setup_10.x | bash -  # adds nodesource.com to your apt search path
-	# apt-get install -y nodejs
-	# cd assets
-	# make build
+# (inside the smh_app container:)
+curl -sL https://deb.nodesource.com/setup_10.x | bash -  # adds nodesource.com to your apt search path
+apt-get install -y nodejs
+cd assets
+make build
 
-You can now go to [sharemyhealthapp](http://sharemyhealthapp:8002) and login. Once logged in you can [connect share my health as a data source](http://sharemyhealthapp:8002/resources/).
+# or, to watch files and build continually:
+npm run build:watch
+```
+
+You can now go to [sharemyhealthapp:8002](http://sharemyhealthapp:8002) and login. Once logged in you can [connect share my health as a data source](http://sharemyhealthapp:8002/resources/).
 
 ## Trouble shooting
 
