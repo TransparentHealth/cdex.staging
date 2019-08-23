@@ -15,7 +15,8 @@ services:
     environment:
       - DATABASES_CUSTOM=postgres://postgres:toor@vmi_db:5432/vmi
       - OAUTHLIB_INSECURE_TRANSPORT=true
-      - OIDC_ISSUER=http://verifymyidentity:8001
+      - OIDC_ISSUER=${VMI_HOSTNAME_URL}
+      - HOSTNAME_URL=${VMI_HOSTNAME_URL}
       - ALLOWED_HOSTS=verifymyidentity,localhost
       - ROOT_USER=dev
       - ROOT_PASSWORD=password
@@ -41,7 +42,7 @@ services:
     command: python3 manage.py runserver 0.0.0.0:8000
     environment:
       - DATABASES_CUSTOM=postgres://postgres:toor@smh_db:5432/smh
-      - HOSTNAME_URL=http://sharemyhealth:8000
+      - HOSTNAME_URL=${SMH_HOSTNAME_URL}
       - OAUTHLIB_INSECURE_TRANSPORT=true
       - ALLOWED_HOSTS=sharemyhealth,localhost
       - SOCIAL_AUTH_VERIFYMYIDENTITY_OPENIDCONNECT_KEY=${VMI_KEY}
@@ -80,10 +81,10 @@ services:
       - ALLOWED_HOSTS=sharemyhealthapp,localhost
       - VMI_OAUTH_KEY=${APP_VMI_KEY}
       - VMI_OAUTH_SECRET=${APP_VMI_SECRET}
-      - VMI_OAUTH_HOST=http://verifymyidentity:8001
+      - VMI_OAUTH_HOST=${VMI_HOSTNAME_URL}
       - SMH_OAUTH_KEY=${SMH_KEY}
       - SMH_OAUTH_SECRET=${SMH_SECRET}
-      - SMH_OAUTH_HOST=http://sharemyhealth:8000
+      - SMH_OAUTH_HOST=${SMH_HOSTNAME_URL}
       - ROOT_USER=dev
       - ROOT_PASSWORD=password
       - OAUTHLIB_INSECURE_TRANSPORT=1
