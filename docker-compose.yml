@@ -1,6 +1,6 @@
 version: '3'
 services:
- verifymyidentity:
+  verifymyidentity:
     build:
       context: vmi/
       dockerfile: .deployment_staging/Dockerfile
