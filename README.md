@@ -1,3 +1,10 @@
+# STAGING environment
+
+This is the STAGiNG Deployment Repository for VMI/SMH/SMH_APP 
+This repository works in conjunction with the 
+cdex-deploy ansible repository: https://github.com/transparenthealth/cdex-deploy
+
+
 ## Spin up verify my identity
 
 `docker-compose up -d verifymyidentity vmi_db`
