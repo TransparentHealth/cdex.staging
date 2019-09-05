@@ -1,9 +1,9 @@
 [submodule "vmi"]
 	path = vmi
-	url = git@github.com:TransparentHealth/vmi.git
+	url = https://github.com:TransparentHealth/vmi.git
 [submodule "smh_app"]
 	path = smh_app
-	url = git@github.com:TransparentHealth/smh_app.git
+	url = https://github.com:TransparentHealth/smh_app.git
 [submodule "sharemyhealth"]
 	path = sharemyhealth
-	url = git@github.com:TransparentHealth/sharemyhealth.git
+	url = https://github.com:TransparentHealth/sharemyhealth.git
