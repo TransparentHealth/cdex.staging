@@ -1,37 +1,23 @@
 version: '3'
 services:
-  vmi_db:
-    image: postgres
-    environment:
-            - POSTGRES_DB=vmi
-            - POSTGRES_PASSWORD=toor
-    volumes:
-      - vmi_db_data:/var/lib/postgresql/data
-  verifymyidentity:
+ verifymyidentity:
     build:
       context: vmi/
-      dockerfile: .development/Dockerfile
+      dockerfile: .deployment_staging/Dockerfile
     command: python3 manage.py runserver 0.0.0.0:8001
     environment:
       - DATABASES_CUSTOM=postgres://postgres:toor@vmi_db:5432/vmi
       - OAUTHLIB_INSECURE_TRANSPORT=true
       - OIDC_ISSUER=${VMI_HOSTNAME_URL}
       - HOSTNAME_URL=${VMI_HOSTNAME_URL}
-      - ALLOWED_HOSTS=verifymyidentity,localhost
+      - ALLOWED_HOSTS=verifymyidentity,localhost,ec2-3-227-187-144.compute-1.amazonaws.com
       - ROOT_USER=dev
       - ROOT_PASSWORD=password
     ports:
-      - "8001:8001"
+      - "80:8001"
     volumes:
       - ./vmi:/code
       - ./fixtures:/fixtures
-  smh_db:
-    image: postgres
-    environment:
-            - POSTGRES_DB=smh
-            - POSTGRES_PASSWORD=toor
-    volumes:
-      - smh_db_data:/var/lib/postgresql/data
   sharemyhealth:
     build:
       context: sharemyhealth/
@@ -58,16 +44,9 @@ services:
       - HIE_BASIC_AUTH_PASSWORD=${HIE_BASIC_AUTH_PASSWORD}
     ports:
       - "8000:8000"
-    links:
-      - verifymyidentity
+#    links:
+#      - verifymyidentity
 
-  smh_app_db:
-    image: postgres
-    environment:
-      - POSTGRES_DB=smh_app
-      - POSTGRES_PASSWORD=toor
-    volumes:
-      - smh_app_db_data:/var/lib/postgresql/data
   smh_app:
     build:
       context: smh_app/
